@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anneska Zohaa Arvenayla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(to bottom, #FFF8E7, #F8E8D9); /* Light cream to beige gradient */
+            color: #5D4037; /* Warm brown for text */
+            line-height: 1.8;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 50px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 700;
+            color: #F4C2C2;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            text-shadow: 0 4px 8px rgba(244, 194, 194, 0.4);
+            background: linear-gradient(45deg, #F4C2C2, #FFB6C1, #FFC0CB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #8D6E63; /* Muted brown */
+        }
+
+        .poem-section {
+            margin: 60px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .poem-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stanza {
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+            padding: 30px;
+            background: linear-gradient(145deg, rgba(255, 248, 231, 0.8), rgba(248, 232, 217, 0.9));
+            border-radius: 20px;
+            border-left: 6px solid #F4C2C2;
+            box-shadow: 0 8px 32px rgba(244, 194, 194, 0.15);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stanza::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(244, 194, 194, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .stanza:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(244, 194, 194, 0.25);
+            background: linear-gradient(145deg, rgba(255, 252, 245, 0.9), rgba(248, 232, 217, 0.95));
+        }
+
+        .stanza:hover::before {
+            left: 100%;
+        }
+
+        .stanza em {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #F4C2C2;
+            font-style: normal;
+            display: block;
+            margin: 15px 0;
+            text-shadow: 0 2px 4px rgba(244, 194, 194, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+            position: relative;
+        }
+
+        .stanza-decoration {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: rgba(244, 194, 194, 0.3);
+            font-family: serif;
+        }
+
+        /* Enhanced background with multiple layers */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(244, 194, 194, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 192, 203, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            background-attachment: fixed;
+            animation: floatBackground 20s ease-in-out infinite;
+        }
+
+        /* Floating hearts animation */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(244, 194, 194, 0.3);
+            animation: float 8s linear infinite;
+        }
+
+        /* Watermark footer */
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Dancing Script', cursive;
+            font-size: 1rem;
+            color: rgba(141, 110, 99, 0.6); /* Muted brown with opacity */
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            animation: fadeInUp 2s ease-out 1s both;
+            letter-spacing: 1px;
+        }
+
+        /* Enhanced animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes floatBackground {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.02);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+            color: #F4C2C2;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .title {
+                font-size: 3rem;
+            }
+
+            .poem-section {
+                margin: 40px 0;
+            }
+
+            .stanza {
+                font-size: 1rem;
+                padding: 15px;
+            }
+
+            .stanza-decoration {
+                font-size: 1.5rem;
+                top: 10px;
+                right: 15px;
+            }
+
+            .watermark {
+                font-size: 0.9rem;
+                bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2.5rem;
+            }
+
+            .stanza {
+                margin-bottom: 30px;
+                padding: 10px;
+            }
+
+            .watermark {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Hide audio player completely (background music only) */
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="title">Anneska Zohaa Arvenayla</h1>
+        </header>
+
+        <section class="poem-section" data-stanza="1">
+            <div class="stanza">
+                <div class="stanza-decoration">❦</div>
+                Ada nama yang pelan-pelan tinggal di kepala,<br>
+                bukan karena sering disebut,<br>
+                tapi karena rasanya sulit dilupa.
+            </div>
+        </section>
+
+        <section class="poem-section" data-stanza="2">
+            <div class="stanza">
+                <div class="stanza-decoration">❦</div>
+                <em>Anneska,</em><br>
+                dalam caramu bicara,<br>
+                ada tenang yang nggak dibuat-buat.<br>
+                Kadang diam kamu aja<br>
+                udah cukup buat hati berhenti cari ke mana-mana.
+            </div>
+        </section>
+
+        <section class="poem-section" data-stanza="3">
+            <div class="stanza">
+                <div class="stanza-decoration">❦</div>
+                <em>Zohaa,</em><br>
+                kamu tuh kayak cahaya yang nggak minta dilihat,<br>
+                tapi tetap nyampe ke hati yang lagi gelap.<br>
+                Nggak ribut, nggak heboh,<br>
+                tapi ngena.
+            </div>
+        </section>
+
+        <section class="poem-section" data-stanza="4">
+            <div class="stanza">
+                <div class="stanza-decoration">❦</div>
+                <em>Arvenayla,</em><br>
+                nama terakhir yang jatuhnya paling lembut.<br>
+                Kayak akhir dari lagu yang nggak pengin selesai.<br>
+                Ada manis, ada hangat,<br>
+                ada rasa ingin dekat tapi tetap jaga jarak.
+            </div>
+        </section>
+
+        <section class="poem-section" data-stanza="5">
+            <div class="stanza">
+                <div class="stanza-decoration">❦</div>
+                Tiga nama, diri kamu.<br>
+                Dan jujur,<br>
+                aku nggak tahu sejak kapan,<br>
+                tapi setiap kali dengar namamu,<br>
+                aku ngerasa...<br>
+                <em>pulang</em>.
+            </div>
+        </section>
+
+        <!-- Hidden background music: Autoplay enabled (muted initially for browser compatibility) -->
+        <!-- Replace src with a suitable romantic audio file (e.g., free piano/ambient track) -->
+        <audio id="backgroundMusic" loop autoplay muted>
+            <source src="music.mp3" type="audio/wav">
+            <!-- Better suggestion: Use a free romantic track like a soft piano MP3 -->
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <!-- Watermark -->
+    <footer class="watermark">
+        Tegar W
+    </footer>
+
+    <script>
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.createElement('div');
+            heartsContainer.className = 'floating-hearts';
+            document.body.appendChild(heartsContainer);
+
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 8 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // Enhanced fade-in on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.poem-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Optional: Gentle auto-scroll to next section on click (minimal interaction)
+        document.querySelectorAll('.stanza').forEach((stanza, index) => {
+            stanza.addEventListener('click', () => {
+                const nextSection = document.querySelectorAll('.poem-section')[index + 1];
+                if (nextSection) {
+                    nextSection.scrollIntoView({ behavior: 'smooth' });
+                }
+                // Unmute music on first user interaction
+                unmuteMusic();
+            });
+        });
+
+        // Enhanced typing effect for title with cursor
+        const title = document.querySelector('.title');
+        const originalText = title.textContent;
+        title.textContent = '';
+        let i = 0;
+        function typeWriter() {
+            if (i < originalText.length) {
+                title.textContent += originalText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 120); // Slightly faster for better flow
+            } else {
+                // Add blinking cursor effect after typing completes
+                title.innerHTML += '<span class="cursor">|</span>';
+                const cursor = document.querySelector('.cursor');
+                setInterval(() => {
+                    cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+                }, 500);
+            }
+        }
+
+        // Auto-play and unmute music functionality
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        let hasInteracted = false;
+
+        function unmuteMusic() {
+            if (!hasInteracted && backgroundMusic) {
+                backgroundMusic.muted = false;
+                hasInteracted = true;
+                backgroundMusic.play().catch(e => console.log('Autoplay prevented:', e));
+            }
+        }
+
+        // Attempt to play on load (muted)
+        window.addEventListener('load', () => {
+            if (backgroundMusic) {
+                backgroundMusic.play().catch(e => console.log('Initial autoplay prevented:', e));
+            }
+            typeWriter();
+            createHearts();
+            
+            // Add continuous scroll animations
+            document.querySelectorAll('.poem-section').forEach((section, index) => {
+                section.style.transitionDelay = (index * 0.2) + 's';
+            });
+
+            // Unmute on any user interaction (click, touch, keypress) for better UX
+            document.addEventListener('click', unmuteMusic, { once: true });
+            document.addEventListener('touchstart', unmuteMusic, { once: true });
+            document.addEventListener('keydown', unmuteMusic, { once: true });
+        });
+    </script>
+</body>
+</html>
