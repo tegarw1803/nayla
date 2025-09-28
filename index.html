@@ -52,12 +52,6 @@
             animation: gradientShift 3s ease-in-out infinite;
         }
 
-        .subtitle {
-            font-size: 1.2rem;
-            font-style: italic;
-            color: #8D6E63;
-        }
-
         .poem-section {
             margin: 60px 0;
             opacity: 0;
@@ -82,7 +76,6 @@
             border-radius: 20px;
             border-left: 6px solid #F4C2C2;
             box-shadow: 0 8px 32px rgba(244, 194, 194, 0.15);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
         }
@@ -117,7 +110,6 @@
             margin: 15px 0;
             text-shadow: 0 2px 4px rgba(244, 194, 194, 0.3);
             animation: pulse 2s ease-in-out infinite;
-            position: relative;
         }
 
         .stanza-decoration {
@@ -126,7 +118,6 @@
             right: 20px;
             font-size: 2rem;
             color: rgba(244, 194, 194, 0.3);
-            font-family: serif;
         }
 
         body::before {
@@ -174,7 +165,6 @@
             z-index: 10;
             pointer-events: none;
             animation: fadeInUp 2s ease-out 1s both;
-            letter-spacing: 1px;
         }
 
         @keyframes fadeInUp {
@@ -224,12 +214,8 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .cursor {
@@ -243,53 +229,21 @@
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            .title {
-                font-size: 3rem;
-            }
-
-            .poem-section {
-                margin: 40px 0;
-            }
-
-            .stanza {
-                font-size: 1rem;
-                padding: 15px;
-            }
-
-            .stanza-decoration {
-                font-size: 1.5rem;
-                top: 10px;
-                right: 15px;
-            }
-
-            .watermark {
-                font-size: 0.9rem;
-                bottom: 10px;
-            }
+            .container { padding: 10px; }
+            .title { font-size: 3rem; }
+            .poem-section { margin: 40px 0; }
+            .stanza { font-size: 1rem; padding: 15px; }
+            .stanza-decoration { font-size: 1.5rem; top: 10px; right: 15px; }
+            .watermark { font-size: 0.9rem; bottom: 10px; }
         }
 
         @media (max-width: 480px) {
-            .title {
-                font-size: 2.5rem;
-            }
-
-            .stanza {
-                margin-bottom: 30px;
-                padding: 10px;
-            }
-
-            .watermark {
-                font-size: 0.8rem;
-            }
+            .title { font-size: 2.5rem; }
+            .stanza { margin-bottom: 30px; padding: 10px; }
+            .watermark { font-size: 0.8rem; }
         }
 
-        audio {
-            display: none;
-        }
+        audio { display: none; }
     </style>
 </head>
 <body>
@@ -352,17 +306,17 @@
             </div>
         </section>
 
-        <audio id="backgroundMusic" loop autoplay muted>
+        <!-- Background music (tidak muted) -->
+        <audio id="backgroundMusic" loop>
             <source src="music.mp3" type="audio/mpeg">
-            <!-- Your browser does not support the audio element. -->
+            Your browser does not support the audio element.
         </audio>
     </div>
 
-    <footer class="watermark">
-        Tegar W
-    </footer>
+    <footer class="watermark">Tegar W</footer>
 
     <script>
+        // Floating hearts
         function createHearts() {
             const heartsContainer = document.createElement('div');
             heartsContainer.className = 'floating-hearts';
@@ -379,33 +333,20 @@
             }
         }
 
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
+        // Observer untuk animasi scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
         document.querySelectorAll('.poem-section').forEach(section => {
             observer.observe(section);
         });
 
-        document.querySelectorAll('.stanza').forEach((stanza, index) => {
-            stanza.addEventListener('click', () => {
-                const nextSection = document.querySelectorAll('.poem-section')[index + 1];
-                if (nextSection) {
-                    nextSection.scrollIntoView({ behavior: 'smooth' });
-                }
-                unmuteMusic();
-            });
-        });
-
+        // Typing effect untuk title
         const title = document.querySelector('.title');
         const originalText = title.textContent;
         title.textContent = '';
@@ -417,21 +358,16 @@
                 setTimeout(typeWriter, 120);
             } else {
                 title.innerHTML += '<span class="cursor">|</span>';
-                const cursor = document.querySelector('.cursor');
-                setInterval(() => {
-                    cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
-                }, 500);
             }
         }
 
+        // Musik
         const backgroundMusic = document.getElementById('backgroundMusic');
         let hasInteracted = false;
-
         function unmuteMusic() {
             if (!hasInteracted && backgroundMusic) {
-                backgroundMusic.muted = false;
-                hasInteracted = true;
                 backgroundMusic.play().catch(e => console.log('Autoplay prevented:', e));
+                hasInteracted = true;
             }
         }
 
@@ -441,9 +377,8 @@
             }
             typeWriter();
             createHearts();
-            document.querySelectorAll('.poem-section').forEach((section, index) => {
-                section.style.transitionDelay = (index * 0.2) + 's';
-            });
+
+            // Unmute saat ada interaksi
             document.addEventListener('click', unmuteMusic, { once: true });
             document.addEventListener('touchstart', unmuteMusic, { once: true });
             document.addEventListener('keydown', unmuteMusic, { once: true });
