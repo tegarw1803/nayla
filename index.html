@@ -14,8 +14,8 @@
 
         body {
             font-family: 'Playfair Display', serif;
-            background: linear-gradient(to bottom, #FFF8E7, #F8E8D9); /* Light cream to beige gradient */
-            color: #5D4037; /* Warm brown for text */
+            background: linear-gradient(to bottom, #FFF8E7, #F8E8D9);
+            color: #5D4037;
             line-height: 1.8;
             overflow-x: hidden;
             scroll-behavior: smooth;
@@ -55,7 +55,7 @@
         .subtitle {
             font-size: 1.2rem;
             font-style: italic;
-            color: #8D6E63; /* Muted brown */
+            color: #8D6E63;
         }
 
         .poem-section {
@@ -129,7 +129,6 @@
             font-family: serif;
         }
 
-        /* Enhanced background with multiple layers */
         body::before {
             content: '';
             position: fixed;
@@ -146,7 +145,6 @@
             animation: floatBackground 20s ease-in-out infinite;
         }
 
-        /* Floating hearts animation */
         .floating-hearts {
             position: fixed;
             top: 0;
@@ -164,7 +162,6 @@
             animation: float 8s linear infinite;
         }
 
-        /* Watermark footer */
         .watermark {
             position: fixed;
             bottom: 20px;
@@ -172,7 +169,7 @@
             transform: translateX(-50%);
             font-family: 'Dancing Script', cursive;
             font-size: 1rem;
-            color: rgba(141, 110, 99, 0.6); /* Muted brown with opacity */
+            color: rgba(141, 110, 99, 0.6);
             text-align: center;
             z-index: 10;
             pointer-events: none;
@@ -180,7 +177,6 @@
             letter-spacing: 1px;
         }
 
-        /* Enhanced animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -246,7 +242,6 @@
             50% { opacity: 0; }
         }
 
-        /* Mobile Responsiveness */
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -292,7 +287,6 @@
             }
         }
 
-        /* Hide audio player completely (background music only) */
         audio {
             display: none;
         }
@@ -358,22 +352,17 @@
             </div>
         </section>
 
-        <!-- Hidden background music: Autoplay enabled (muted initially for browser compatibility) -->
-        <!-- Replace src with a suitable romantic audio file (e.g., free piano/ambient track) -->
         <audio id="backgroundMusic" loop autoplay muted>
             <source src="music.mp3" type="audio/mpeg">
-            <!-- Better suggestion: Use a free romantic track like a soft piano MP3 -->
-            Your browser does not support the audio element.
+            <!-- Your browser does not support the audio element. -->
         </audio>
     </div>
 
-    <!-- Watermark -->
     <footer class="watermark">
         Tegar W
     </footer>
 
     <script>
-        // Create floating hearts
         function createHearts() {
             const heartsContainer = document.createElement('div');
             heartsContainer.className = 'floating-hearts';
@@ -390,7 +379,6 @@
             }
         }
 
-        // Enhanced fade-in on scroll
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -408,19 +396,16 @@
             observer.observe(section);
         });
 
-        // Optional: Gentle auto-scroll to next section on click (minimal interaction)
         document.querySelectorAll('.stanza').forEach((stanza, index) => {
             stanza.addEventListener('click', () => {
                 const nextSection = document.querySelectorAll('.poem-section')[index + 1];
                 if (nextSection) {
                     nextSection.scrollIntoView({ behavior: 'smooth' });
                 }
-                // Unmute music on first user interaction
                 unmuteMusic();
             });
         });
 
-        // Enhanced typing effect for title with cursor
         const title = document.querySelector('.title');
         const originalText = title.textContent;
         title.textContent = '';
@@ -429,9 +414,8 @@
             if (i < originalText.length) {
                 title.textContent += originalText.charAt(i);
                 i++;
-                setTimeout(typeWriter, 120); // Slightly faster for better flow
+                setTimeout(typeWriter, 120);
             } else {
-                // Add blinking cursor effect after typing completes
                 title.innerHTML += '<span class="cursor">|</span>';
                 const cursor = document.querySelector('.cursor');
                 setInterval(() => {
@@ -440,7 +424,6 @@
             }
         }
 
-        // Auto-play and unmute music functionality
         const backgroundMusic = document.getElementById('backgroundMusic');
         let hasInteracted = false;
 
@@ -452,20 +435,15 @@
             }
         }
 
-        // Attempt to play on load (muted)
         window.addEventListener('load', () => {
             if (backgroundMusic) {
                 backgroundMusic.play().catch(e => console.log('Initial autoplay prevented:', e));
             }
             typeWriter();
             createHearts();
-            
-            // Add continuous scroll animations
             document.querySelectorAll('.poem-section').forEach((section, index) => {
                 section.style.transitionDelay = (index * 0.2) + 's';
             });
-
-            // Unmute on any user interaction (click, touch, keypress) for better UX
             document.addEventListener('click', unmuteMusic, { once: true });
             document.addEventListener('touchstart', unmuteMusic, { once: true });
             document.addEventListener('keydown', unmuteMusic, { once: true });
@@ -473,4 +451,3 @@
     </script>
 </body>
 </html>
-
